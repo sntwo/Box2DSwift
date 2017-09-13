@@ -115,7 +115,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     displayLink = CADisplayLink(target: self, selector: #selector(BaseViewController.simulationLoop))
-    displayLink.frameInterval = 60 / Int(settings.hz)
+    displayLink.preferredFramesPerSecond = 60 / Int(settings.hz)
     displayLink.add(to: RunLoop.current, forMode: RunLoopMode.commonModes)
   }
   
@@ -139,7 +139,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
   func prepare() {
   }
   
-  func simulationLoop() {
+    @objc func simulationLoop() {
     debugDraw.preRender()
     bombLauncher.render()
     let timeStep = settings.calcTimeStep()
@@ -163,16 +163,16 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
   func step() {
   }
   
-  func onPause(_ sender: UIBarButtonItem) {
+    @objc func onPause(_ sender: UIBarButtonItem) {
     settings.pause = !settings.pause
   }
   
-  func onSingleStep(_ sender: UIBarButtonItem) {
+    @objc func onSingleStep(_ sender: UIBarButtonItem) {
     settings.pause = true
     settings.singleStep = true
   }
   
-  func onSettings(_ sender: UIBarButtonItem) {
+    @objc func onSettings(_ sender: UIBarButtonItem) {
     settingsVC.settings = settings
     settingsVC.settingViewControllerDelegate = self
     settingsVC.modalPresentationStyle = UIModalPresentationStyle.popover
@@ -186,11 +186,11 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     self.settings = settings
     infoView.enableProfile = settings.drawProfile
     infoView.enableStats = settings.drawStats
-    displayLink.frameInterval = 60 / Int(settings.hz)
+    displayLink.preferredFramesPerSecond = 60 / Int(settings.hz)
     debugDraw.SetFlags(settings.debugDrawFlag)
   }
 
-  func onPan(_ gr: UIPanGestureRecognizer) {
+    @objc func onPan(_ gr: UIPanGestureRecognizer) {
     let p = gr.location(in: debugDraw)
     let wp = ConvertScreenToWorld(p, size: debugDraw.bounds.size, viewCenter: settings.viewCenter)
     
@@ -235,7 +235,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     }
   }
   
-  func onTap(_ gr: UITapGestureRecognizer) {
+    @objc func onTap(_ gr: UITapGestureRecognizer) {
     bombLauncher.onTap(gr)
   }
   
